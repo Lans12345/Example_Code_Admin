@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
 
-class UsersTab extends StatelessWidget {
-  const UsersTab({super.key});
+class ProvidersTab extends StatelessWidget {
+  const ProvidersTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,10 @@ class UsersTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BoldText(label: 'List of Users', fontSize: 24, color: Colors.blue),
+            BoldText(
+                label: 'List of Service Providers',
+                fontSize: 24,
+                color: Colors.blue),
             SizedBox(
               height: 30,
             ),
