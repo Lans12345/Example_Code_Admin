@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:the_serve_admin/screens/tabs/providers_tab.dart';
 import 'package:the_serve_admin/screens/tabs/users_tab.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
 
@@ -111,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // TradeTab(),
                 // ItemsTab(),
                 UsersTab(),
-                UsersTab(),
+                ProvidersTab(),
                 UsersTab(),
               ],
             ),
