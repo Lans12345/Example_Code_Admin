@@ -33,6 +33,9 @@ class ProductsTab extends StatelessWidget {
                           label: 'Name', fontSize: 12, color: Colors.white)),
                   DataColumn(
                       label: NormalText(
+                          label: 'Price', fontSize: 12, color: Colors.white)),
+                  DataColumn(
+                      label: NormalText(
                           label: 'Provider',
                           fontSize: 12,
                           color: Colors.white)),
@@ -51,6 +54,10 @@ class ProductsTab extends StatelessWidget {
                       )),
                       DataCell(NormalText(
                           label: 'SCH', fontSize: 14, color: Colors.white)),
+                      DataCell(NormalText(
+                          label: '200.00php',
+                          fontSize: 14,
+                          color: Colors.white)),
                       DataCell(NormalText(
                           label: 'Google LLC',
                           fontSize: 14,
