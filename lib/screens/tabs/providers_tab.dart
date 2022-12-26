@@ -29,9 +29,6 @@ class ProvidersTab extends StatelessWidget {
                           label: 'No.', fontSize: 12, color: Colors.white)),
                   DataColumn(
                       label: NormalText(
-                          label: 'Profile', fontSize: 12, color: Colors.white)),
-                  DataColumn(
-                      label: NormalText(
                           label: 'Name', fontSize: 12, color: Colors.white)),
                   DataColumn(
                       label: NormalText(
@@ -41,19 +38,14 @@ class ProvidersTab extends StatelessWidget {
                           label: 'Contact Number',
                           fontSize: 12,
                           color: Colors.white)),
+                  DataColumn(
+                      label: NormalText(
+                          label: 'Website', fontSize: 12, color: Colors.white)),
                 ], rows: [
                   for (int i = 0; i < 10; i++)
                     DataRow(cells: [
                       DataCell(NormalText(
-                          label: '1', fontSize: 14, color: Colors.white)),
-                      DataCell(Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: CircleAvatar(
-                          minRadius: 50,
-                          maxRadius: 50,
-                          backgroundColor: Colors.white,
-                        ),
-                      )),
+                          label: '$i', fontSize: 14, color: Colors.white)),
                       DataCell(NormalText(
                           label: 'Lance Olana',
                           fontSize: 14,
@@ -64,6 +56,10 @@ class ProvidersTab extends StatelessWidget {
                           color: Colors.white)),
                       DataCell(NormalText(
                           label: '09090104355',
+                          fontSize: 14,
+                          color: Colors.white)),
+                      DataCell(NormalText(
+                          label: 'sample.com.ph',
                           fontSize: 14,
                           color: Colors.white)),
                     ])
