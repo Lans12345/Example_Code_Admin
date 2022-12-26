@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
 
@@ -17,9 +18,27 @@ class UsersTab extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            StreamBuilder<Object>(
-                stream: null,
-                builder: (context, snapshot) {
+            StreamBuilder<QuerySnapshot>(
+                stream:
+                    FirebaseFirestore.instance.collection('Users').snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    print('waiting');
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
+                    );
+                  }
+
+                  final data = snapshot.requireData;
                   return Center(
                     child: Container(
                       color: Colors.blue,
@@ -50,7 +69,7 @@ class UsersTab extends StatelessWidget {
                                 fontSize: 12,
                                 color: Colors.white)),
                       ], rows: [
-                        for (int i = 0; i < 10; i++)
+                        for (int i = 0; i < data.size; i++)
                           DataRow(cells: [
                             DataCell(NormalText(
                                 label: '$i',
@@ -59,21 +78,23 @@ class UsersTab extends StatelessWidget {
                             DataCell(Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    data.docs[i]['profilePicture']),
                                 minRadius: 50,
                                 maxRadius: 50,
                                 backgroundColor: Colors.white,
                               ),
                             )),
                             DataCell(NormalText(
-                                label: 'Lance Olana',
+                                label: data.docs[i]['name'],
                                 fontSize: 14,
                                 color: Colors.white)),
                             DataCell(NormalText(
-                                label: 'lance@gmail.com',
+                                label: data.docs[i]['email'],
                                 fontSize: 14,
                                 color: Colors.white)),
                             DataCell(NormalText(
-                                label: '09090104355',
+                                label: data.docs[i]['contactNumber'],
                                 fontSize: 14,
                                 color: Colors.white)),
                           ])
