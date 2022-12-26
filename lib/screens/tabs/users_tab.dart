@@ -17,56 +17,70 @@ class UsersTab extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            Center(
-              child: Container(
-                color: Colors.blue,
-                child: DataTable(columns: [
-                  DataColumn(
-                      label: NormalText(
-                          label: 'No.', fontSize: 12, color: Colors.white)),
-                  DataColumn(
-                      label: NormalText(
-                          label: 'Profile', fontSize: 12, color: Colors.white)),
-                  DataColumn(
-                      label: NormalText(
-                          label: 'Name', fontSize: 12, color: Colors.white)),
-                  DataColumn(
-                      label: NormalText(
-                          label: 'Email', fontSize: 12, color: Colors.white)),
-                  DataColumn(
-                      label: NormalText(
-                          label: 'Contact Number',
-                          fontSize: 12,
-                          color: Colors.white)),
-                ], rows: [
-                  for (int i = 0; i < 10; i++)
-                    DataRow(cells: [
-                      DataCell(NormalText(
-                          label: '$i', fontSize: 14, color: Colors.white)),
-                      DataCell(Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: CircleAvatar(
-                          minRadius: 50,
-                          maxRadius: 50,
-                          backgroundColor: Colors.white,
-                        ),
-                      )),
-                      DataCell(NormalText(
-                          label: 'Lance Olana',
-                          fontSize: 14,
-                          color: Colors.white)),
-                      DataCell(NormalText(
-                          label: 'lance@gmail.com',
-                          fontSize: 14,
-                          color: Colors.white)),
-                      DataCell(NormalText(
-                          label: '09090104355',
-                          fontSize: 14,
-                          color: Colors.white)),
-                    ])
-                ]),
-              ),
-            ),
+            StreamBuilder<Object>(
+                stream: null,
+                builder: (context, snapshot) {
+                  return Center(
+                    child: Container(
+                      color: Colors.blue,
+                      child: DataTable(columns: [
+                        DataColumn(
+                            label: NormalText(
+                                label: 'No.',
+                                fontSize: 12,
+                                color: Colors.white)),
+                        DataColumn(
+                            label: NormalText(
+                                label: 'Profile',
+                                fontSize: 12,
+                                color: Colors.white)),
+                        DataColumn(
+                            label: NormalText(
+                                label: 'Name',
+                                fontSize: 12,
+                                color: Colors.white)),
+                        DataColumn(
+                            label: NormalText(
+                                label: 'Email',
+                                fontSize: 12,
+                                color: Colors.white)),
+                        DataColumn(
+                            label: NormalText(
+                                label: 'Contact Number',
+                                fontSize: 12,
+                                color: Colors.white)),
+                      ], rows: [
+                        for (int i = 0; i < 10; i++)
+                          DataRow(cells: [
+                            DataCell(NormalText(
+                                label: '$i',
+                                fontSize: 14,
+                                color: Colors.white)),
+                            DataCell(Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: CircleAvatar(
+                                minRadius: 50,
+                                maxRadius: 50,
+                                backgroundColor: Colors.white,
+                              ),
+                            )),
+                            DataCell(NormalText(
+                                label: 'Lance Olana',
+                                fontSize: 14,
+                                color: Colors.white)),
+                            DataCell(NormalText(
+                                label: 'lance@gmail.com',
+                                fontSize: 14,
+                                color: Colors.white)),
+                            DataCell(NormalText(
+                                label: '09090104355',
+                                fontSize: 14,
+                                color: Colors.white)),
+                          ])
+                      ]),
+                    ),
+                  );
+                }),
           ],
         ),
       ),
