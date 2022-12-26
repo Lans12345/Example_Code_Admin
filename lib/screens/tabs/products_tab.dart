@@ -83,8 +83,9 @@ class ProductsTab extends StatelessWidget {
                                 minRadius: 50,
                                 maxRadius: 50,
                                 backgroundColor: Colors.white,
-                                backgroundImage:
-                                    NetworkImage(data.docs[i]['imageURL']),
+                                backgroundImage: NetworkImage(
+                                  data.docs[i]['imageURL'],
+                                ),
                               ),
                             )),
                             DataCell(NormalText(
