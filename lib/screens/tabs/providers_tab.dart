@@ -25,6 +25,7 @@ class ProvidersTab extends StatelessWidget {
               StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Providers')
+                      .where('isDeleted', isEqualTo: false)
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -113,7 +114,7 @@ class ProvidersTab extends StatelessWidget {
                                     FirebaseFirestore.instance
                                         .collection('Providers')
                                         .doc(data.docs[i].id)
-                                        .delete();
+                                        .update({'isDeleted': true});
                                   },
                                   icon: Icon(
                                     Icons.delete,

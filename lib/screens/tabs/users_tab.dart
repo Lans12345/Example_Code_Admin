@@ -23,6 +23,7 @@ class UsersTab extends StatelessWidget {
               StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Users')
+                      .where('isDeleted', isEqualTo: false)
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -111,7 +112,7 @@ class UsersTab extends StatelessWidget {
                                     FirebaseFirestore.instance
                                         .collection('Users')
                                         .doc(data.docs[i].id)
-                                        .delete();
+                                        .update({'isDeleted': true});
                                   },
                                   icon: Icon(
                                     Icons.delete,
