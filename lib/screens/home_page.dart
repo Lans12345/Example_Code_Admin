@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:the_serve_admin/screens/auth/login_page.dart';
 import 'package:the_serve_admin/screens/tabs/products_tab.dart';
 import 'package:the_serve_admin/screens/tabs/providers_tab.dart';
 import 'package:the_serve_admin/screens/tabs/users_tab.dart';
@@ -101,6 +102,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     page.jumpToPage(2);
                   },
                   icon: const Icon(Icons.card_giftcard_sharp),
+                ),
+                SideMenuItem(
+                  priority: 2,
+                  title: 'Logout',
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => LandingPage()));
+                  },
+                  icon: const Icon(Icons.logout),
                 ),
               ],
             ),
