@@ -42,7 +42,7 @@ class ProvidersTab extends StatelessWidget {
                         )),
                       );
                     }
-    
+
                     final data = snapshot.requireData;
                     return Center(
                       child: Container(
@@ -73,6 +73,11 @@ class ProvidersTab extends StatelessWidget {
                                   label: 'Website',
                                   fontSize: 12,
                                   color: Colors.white)),
+                          DataColumn(
+                              label: NormalText(
+                                  label: '',
+                                  fontSize: 12,
+                                  color: Colors.white)),
                         ], rows: [
                           for (int i = 0; i < data.size; i++)
                             DataRow(cells: [
@@ -80,10 +85,13 @@ class ProvidersTab extends StatelessWidget {
                                   label: '$i',
                                   fontSize: 14,
                                   color: Colors.white)),
-                              DataCell(NormalText(
-                                  label: data.docs[i]['name'],
-                                  fontSize: 14,
-                                  color: Colors.white)),
+                              DataCell(SizedBox(
+                                width: 100,
+                                child: NormalText(
+                                    label: data.docs[i]['name'],
+                                    fontSize: 14,
+                                    color: Colors.white),
+                              )),
                               DataCell(NormalText(
                                   label: data.docs[i]['email'],
                                   fontSize: 14,
@@ -92,10 +100,27 @@ class ProvidersTab extends StatelessWidget {
                                   label: data.docs[i]['contactNumber'],
                                   fontSize: 14,
                                   color: Colors.white)),
-                              DataCell(NormalText(
-                                  label: data.docs[i]['url'],
-                                  fontSize: 14,
-                                  color: Colors.white)),
+                              DataCell(SizedBox(
+                                width: 120,
+                                child: NormalText(
+                                    label: data.docs[i]['url'],
+                                    fontSize: 14,
+                                    color: Colors.white),
+                              )),
+                              DataCell(
+                                IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('Providers')
+                                        .doc(data.docs[i].id)
+                                        .delete();
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
                             ])
                         ]),
                       ),

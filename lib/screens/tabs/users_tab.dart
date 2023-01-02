@@ -71,6 +71,11 @@ class UsersTab extends StatelessWidget {
                                   label: 'Contact Number',
                                   fontSize: 12,
                                   color: Colors.white)),
+                          DataColumn(
+                              label: NormalText(
+                                  label: '',
+                                  fontSize: 12,
+                                  color: Colors.white)),
                         ], rows: [
                           for (int i = 0; i < data.size; i++)
                             DataRow(cells: [
@@ -100,6 +105,20 @@ class UsersTab extends StatelessWidget {
                                   label: data.docs[i]['contactNumber'],
                                   fontSize: 14,
                                   color: Colors.white)),
+                              DataCell(
+                                IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('Users')
+                                        .doc(data.docs[i].id)
+                                        .delete();
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
                             ])
                         ]),
                       ),
