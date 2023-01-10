@@ -2,8 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
 
-class UsersTab extends StatelessWidget {
-  const UsersTab({super.key});
+class UsersTab extends StatefulWidget {
+  @override
+  State<UsersTab> createState() => _UsersTabState();
+}
+
+class _UsersTabState extends State<UsersTab> {
+  int _dropdownValue1 = 0;
+
+  late bool userType = false;
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +22,80 @@ class UsersTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BoldText(
-                  label: 'List of Users', fontSize: 24, color: Colors.blue),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BoldText(
+                      label: 'List of Users', fontSize: 24, color: Colors.blue),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50),
+                    child: Container(
+                      width: 250,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(50, 5, 50, 5),
+                        child: DropdownButton(
+                          underline: Container(color: Colors.transparent),
+                          iconEnabledColor: Colors.black,
+                          isExpanded: true,
+                          value: _dropdownValue1,
+                          items: [
+                            DropdownMenuItem(
+                              onTap: () {
+                                setState(() {
+                                  userType = false;
+                                });
+                              },
+                              value: 0,
+                              child: Center(
+                                  child: Row(children: [
+                                Text('Unbanned Users',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'QRegular',
+                                      color: Colors.black,
+                                    ))
+                              ])),
+                            ),
+                            DropdownMenuItem(
+                              onTap: () {
+                                setState(() {
+                                  userType = true;
+                                });
+                              },
+                              value: 1,
+                              child: Center(
+                                  child: Row(children: [
+                                Text('Banned Users',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'QRegular',
+                                      color: Colors.black,
+                                    ))
+                              ])),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _dropdownValue1 = int.parse(value.toString());
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
               SizedBox(
                 height: 30,
               ),
               StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Users')
-                      .where('isDeleted', isEqualTo: false)
+                      .where('isDeleted', isEqualTo: userType)
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -45,86 +117,134 @@ class UsersTab extends StatelessWidget {
                     final data = snapshot.requireData;
                     return Center(
                       child: Container(
-                        color: Colors.blue,
-                        child: DataTable(columns: [
-                          DataColumn(
-                              label: NormalText(
-                                  label: 'No.',
-                                  fontSize: 12,
-                                  color: Colors.white)),
-                          DataColumn(
-                              label: NormalText(
-                                  label: 'Profile',
-                                  fontSize: 12,
-                                  color: Colors.white)),
-                          DataColumn(
-                              label: NormalText(
-                                  label: 'Name',
-                                  fontSize: 12,
-                                  color: Colors.white)),
-                          DataColumn(
-                              label: NormalText(
-                                  label: 'Email',
-                                  fontSize: 12,
-                                  color: Colors.white)),
-                          DataColumn(
-                              label: NormalText(
-                                  label: 'Contact Number',
-                                  fontSize: 12,
-                                  color: Colors.white)),
-                          DataColumn(
-                              label: NormalText(
-                                  label: '',
-                                  fontSize: 12,
-                                  color: Colors.white)),
-                        ], rows: [
-                          for (int i = 0; i < data.size; i++)
-                            DataRow(cells: [
-                              DataCell(NormalText(
-                                  label: '$i',
-                                  fontSize: 14,
-                                  color: Colors.white)),
-                              DataCell(Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      data.docs[i]['profilePicture']),
-                                  minRadius: 50,
-                                  maxRadius: 50,
-                                  backgroundColor: Colors.white,
-                                ),
-                              )),
-                              DataCell(NormalText(
-                                  label: data.docs[i]['name'],
-                                  fontSize: 14,
-                                  color: Colors.white)),
-                              DataCell(NormalText(
-                                  label: data.docs[i]['email'],
-                                  fontSize: 14,
-                                  color: Colors.white)),
-                              DataCell(NormalText(
-                                  label: data.docs[i]['contactNumber'],
-                                  fontSize: 14,
-                                  color: Colors.white)),
-                              DataCell(
-                                IconButton(
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection('Users')
-                                        .doc(data.docs[i].id)
-                                        .update({'isDeleted': true});
-                                  },
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                            ])
-                        ]),
+                        child: DataTable(
+                            border: TableBorder.all(
+                              color: Colors.grey,
+                            ),
+                            columns: [
+                              DataColumn(
+                                  label: BoldText(
+                                      label: 'No.',
+                                      fontSize: 16,
+                                      color: Colors.black)),
+                              DataColumn(
+                                  label: BoldText(
+                                      label: 'Profile',
+                                      fontSize: 16,
+                                      color: Colors.black)),
+                              DataColumn(
+                                  label: BoldText(
+                                      label: 'Name',
+                                      fontSize: 16,
+                                      color: Colors.black)),
+                              DataColumn(
+                                  label: BoldText(
+                                      label: 'Email',
+                                      fontSize: 16,
+                                      color: Colors.black)),
+                              DataColumn(
+                                  label: BoldText(
+                                      label: 'Contact Number',
+                                      fontSize: 16,
+                                      color: Colors.black)),
+                              DataColumn(
+                                  label: BoldText(
+                                      label: 'Ban\nUser',
+                                      fontSize: 12,
+                                      color: Colors.black)),
+                            ],
+                            rows: [
+                              for (int i = 0; i < data.size; i++)
+                                DataRow(
+                                    color: MaterialStateProperty.resolveWith<
+                                        Color?>((Set<MaterialState> states) {
+                                      if (i.floor().isEven) {
+                                        return Colors.blueGrey[50];
+                                      }
+                                      return null; // Use the default value.
+                                    }),
+                                    cells: [
+                                      DataCell(NormalText(
+                                          label: '$i',
+                                          fontSize: 14,
+                                          color: Colors.grey)),
+                                      DataCell(Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              data.docs[i]['profilePicture']),
+                                          minRadius: 50,
+                                          maxRadius: 50,
+                                          backgroundColor: Colors.grey,
+                                        ),
+                                      )),
+                                      DataCell(NormalText(
+                                          label: data.docs[i]['name'],
+                                          fontSize: 14,
+                                          color: Colors.grey)),
+                                      DataCell(NormalText(
+                                          label: data.docs[i]['email'],
+                                          fontSize: 14,
+                                          color: Colors.grey)),
+                                      DataCell(NormalText(
+                                          label: data.docs[i]['contactNumber'],
+                                          fontSize: 14,
+                                          color: Colors.grey)),
+                                      userType
+                                          ? DataCell(
+                                              IconButton(
+                                                onPressed: () {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content: NormalText(
+                                                              label:
+                                                                  'User unbanned succesfully!',
+                                                              fontSize: 12,
+                                                              color: Colors
+                                                                  .white)));
+                                                  FirebaseFirestore.instance
+                                                      .collection('Users')
+                                                      .doc(data.docs[i].id)
+                                                      .update(
+                                                          {'isDeleted': false});
+                                                },
+                                                icon: Icon(
+                                                  Icons.visibility_off,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                            )
+                                          : DataCell(
+                                              IconButton(
+                                                onPressed: () {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content: NormalText(
+                                                              label:
+                                                                  'User banned succesfully!',
+                                                              fontSize: 12,
+                                                              color: Colors
+                                                                  .white)));
+                                                  FirebaseFirestore.instance
+                                                      .collection('Users')
+                                                      .doc(data.docs[i].id)
+                                                      .update(
+                                                          {'isDeleted': true});
+                                                },
+                                                icon: Icon(
+                                                  Icons.visibility_rounded,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ),
+                                    ])
+                            ]),
                       ),
                     );
                   }),
+              SizedBox(
+                height: 50,
+              ),
             ],
           ),
         ),
