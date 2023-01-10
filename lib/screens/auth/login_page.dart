@@ -85,6 +85,7 @@ class LandingPage extends StatelessWidget {
                                               child: Container(
                                                 color: Colors.white,
                                                 child: TextFormField(
+                                                  obscureText: true,
                                                   controller: passConttroller,
                                                 ),
                                               ),
