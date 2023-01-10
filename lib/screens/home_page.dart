@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: const Icon(Icons.card_giftcard_sharp),
                 ),
                 SideMenuItem(
-                  priority: 2,
+                  priority: 4,
                   title: 'Logout',
                   onTap: () {
                     Navigator.of(context).pushReplacement(
