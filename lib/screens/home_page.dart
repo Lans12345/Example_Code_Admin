@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
@@ -5,6 +6,7 @@ import 'package:the_serve_admin/screens/auth/login_page.dart';
 import 'package:the_serve_admin/screens/tabs/products_tab.dart';
 import 'package:the_serve_admin/screens/tabs/providers_tab.dart';
 import 'package:the_serve_admin/screens/tabs/users_tab.dart';
+import 'package:the_serve_admin/services/add_categ.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +20,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   PageController page = PageController();
+
+  final _categ = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +109,167 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SideMenuItem(
                   priority: 4,
+                  title: 'Categories',
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: SizedBox(
+                              height: 500,
+                              width: 500,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  BoldText(
+                                      label: 'List of Categories',
+                                      fontSize: 14,
+                                      color: Colors.black),
+                                  StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('Categ')
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        if (snapshot.hasError) {
+                                          print(snapshot.error);
+                                          return const Center(
+                                              child: Text('Error'));
+                                        }
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          print('waiting');
+                                          return const Padding(
+                                            padding: EdgeInsets.only(top: 50),
+                                            child: Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                              color: Colors.black,
+                                            )),
+                                          );
+                                        }
+
+                                        final data = snapshot.requireData;
+                                        return Expanded(
+                                          child: SizedBox(
+                                            child: ListView.separated(
+                                                itemCount:
+                                                    snapshot.data?.size ?? 0,
+                                                separatorBuilder:
+                                                    ((context, index) {
+                                                  return Divider();
+                                                }),
+                                                itemBuilder: ((context, index) {
+                                                  return ListTile(
+                                                    leading: Icon(
+                                                      Icons.category_rounded,
+                                                      color: Colors.blue,
+                                                    ),
+                                                    title: NormalText(
+                                                        label: data.docs[index]
+                                                            ['name'],
+                                                        fontSize: 14,
+                                                        color: Colors.black),
+                                                    trailing: IconButton(
+                                                      onPressed: (() {
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection('Categ')
+                                                            .doc(data
+                                                                .docs[index].id)
+                                                            .delete();
+                                                        Navigator.pop(context);
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          SnackBar(
+                                                            content: NormalText(
+                                                                label:
+                                                                    'Category Deleted!',
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        );
+                                                      }),
+                                                      icon: Icon(
+                                                        Icons.delete,
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  );
+                                                })),
+                                          ),
+                                        );
+                                      }),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: TextFormField(
+                                      controller: _categ,
+                                      decoration: InputDecoration(
+                                          labelText: 'Name of Category'),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  MaterialButton(
+                                      minWidth: 150,
+                                      height: 40,
+                                      color: Colors.blue,
+                                      child: NormalText(
+                                          label: 'Add Category',
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                      onPressed: (() {
+                                        if (_categ.text == '') {
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: NormalText(
+                                                  label:
+                                                      'Cannot Procceed! Missing input',
+                                                  fontSize: 14,
+                                                  color: Colors.white),
+                                            ),
+                                          );
+                                          _categ.text = '';
+                                        } else {
+                                          addCateg(_categ.text);
+                                          Navigator.pop(context);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content: NormalText(
+                                                label: 'Category Added!',
+                                                fontSize: 14,
+                                                color: Colors.white),
+                                          ));
+
+                                          _categ.text = '';
+                                        }
+                                      })),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                    // Navigator.of(context).pushReplacement(
+                    //     MaterialPageRoute(builder: (context) => LandingPage()));
+                  },
+                  icon: const Icon(Icons.category),
+                ),
+                SideMenuItem(
+                  priority: 5,
                   title: 'Logout',
                   onTap: () {
                     Navigator.of(context).pushReplacement(
