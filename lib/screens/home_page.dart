@@ -209,7 +209,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 20,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(10.0),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        50, 10, 50, 10),
                                     child: TextFormField(
                                       controller: _categ,
                                       decoration: InputDecoration(
