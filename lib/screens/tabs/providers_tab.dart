@@ -213,7 +213,8 @@ class _ProvidersTabState extends State<ProvidersTab> {
                                                           {'isDeleted': false});
                                                 },
                                                 icon: Icon(
-                                                  Icons.visibility_off,
+                                                  Icons
+                                                      .check_circle_outline_outlined,
                                                   color: Colors.green,
                                                 ),
                                               ),
@@ -236,7 +237,7 @@ class _ProvidersTabState extends State<ProvidersTab> {
                                                           {'isDeleted': true});
                                                 },
                                                 icon: Icon(
-                                                  Icons.visibility_rounded,
+                                                  Icons.close,
                                                   color: Colors.red,
                                                 ),
                                               ),
