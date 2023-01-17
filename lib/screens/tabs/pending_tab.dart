@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:the_serve_admin/screens/pages/providers_page.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
 
@@ -16,6 +19,37 @@ class _PendingTabState extends State<PendingTab> {
   late bool userType = false;
 
   late String msg = '';
+
+  final box = GetStorage();
+
+  sendBanMessage(userEmail, String newMsg) async {
+    String username = 'aira.maniquez@lorma.edu';
+    String password = 'Percival12';
+
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username)
+      ..recipients.add(userEmail)
+//      ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
+//      ..bccRecipients.add(Address('bccAddress@example.com'))
+      ..subject = 'PERMISSION STATUS'
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html = "<h1>$newMsg</h1>";
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print(e);
+      for (var p in e.problems) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: NormalText(
+                label: '${p.code}: ${p.msg}',
+                fontSize: 12,
+                color: Colors.white)));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,10 +171,11 @@ class _PendingTabState extends State<PendingTab> {
                                           children: [
                                             IconButton(
                                               onPressed: () {
+                                                box.write('data', data.docs[i]);
                                                 Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const ProvidersPage()));
+                                                            ProvidersPage()));
                                               },
                                               icon: Icon(
                                                 Icons.visibility,
@@ -199,6 +234,11 @@ class _PendingTabState extends State<PendingTab> {
                                                                           .white),
                                                                   onPressed:
                                                                       (() {
+                                                                    sendBanMessage(
+                                                                        data.docs[i]
+                                                                            [
+                                                                            'email'],
+                                                                        msg);
                                                                     Navigator.of(
                                                                         context);
                                                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
