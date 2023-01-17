@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
 
 class UsersTab extends StatefulWidget {
@@ -11,6 +13,64 @@ class _UsersTabState extends State<UsersTab> {
   int _dropdownValue1 = 0;
 
   late bool userType = false;
+
+  sendBanMessage(userEmail) async {
+    String username = 'aira.maniquez@lorma.edu';
+    String password = 'Percival12';
+
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username)
+      ..recipients.add(userEmail)
+//      ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
+//      ..bccRecipients.add(Address('bccAddress@example.com'))
+      ..subject = 'ACCOUNT STATUS'
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html = "<h1>Your account has been banned!</h1>";
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print(e);
+      for (var p in e.problems) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: NormalText(
+                label: '${p.code}: ${p.msg}',
+                fontSize: 12,
+                color: Colors.white)));
+      }
+    }
+  }
+
+  sendUnbanMessage(userEmail) async {
+    String username = 'aira.maniquez@lorma.edu';
+    String password = 'Percival12';
+
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username)
+      ..recipients.add(userEmail)
+//      ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
+//      ..bccRecipients.add(Address('bccAddress@example.com'))
+      ..subject = 'ACCOUNT STATUS'
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html = "<h1>Your account has been unbanned!</h1>";
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print(e);
+      for (var p in e.problems) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: NormalText(
+                label: '${p.code}: ${p.msg}',
+                fontSize: 12,
+                color: Colors.white)));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +254,8 @@ class _UsersTabState extends State<UsersTab> {
                                           ? DataCell(
                                               IconButton(
                                                 onPressed: () {
+                                                  sendUnbanMessage(
+                                                      data.docs[i]['email']);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           content: NormalText(
@@ -217,6 +279,8 @@ class _UsersTabState extends State<UsersTab> {
                                           : DataCell(
                                               IconButton(
                                                 onPressed: () {
+                                                  sendBanMessage(
+                                                      data.docs[i]['email']);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           content: NormalText(

@@ -49,6 +49,7 @@ dependencies:
   easy_sidemenu: ^0.4.1
   responsive_framework: ^0.2.0
   google_fonts:
+  mailer:
 
 dev_dependencies:
   flutter_test:
