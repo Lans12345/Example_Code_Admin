@@ -47,9 +47,24 @@ class ProvidersPage extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Image.network(
-                    box.read('data')['logo'],
-                    height: 300,
+                  SizedBox(
+                    height: 400,
+                    width: 500,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        for (int i = 0;
+                            i < box.read('data')['logo'].length;
+                            i++)
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Image.network(
+                              box.read('data')['logo'][i],
+                              height: 300,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     width: 50,
@@ -64,9 +79,24 @@ class ProvidersPage extends StatelessWidget {
                       SizedBox(
                         height: 10,
                       ),
-                      Image.network(
-                        box.read('data')['permit'],
-                        height: 300,
+                      SizedBox(
+                        height: 400,
+                        width: 500,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            for (int i = 0;
+                                i < box.read('data')['permit'].length;
+                                i++)
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Image.network(
+                                  box.read('data')['permit'][i],
+                                  height: 300,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
