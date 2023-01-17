@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:the_serve_admin/screens/auth/login_page.dart';
+import 'package:the_serve_admin/screens/tabs/pending_tab.dart';
 import 'package:the_serve_admin/screens/tabs/products_tab.dart';
 import 'package:the_serve_admin/screens/tabs/providers_tab.dart';
 import 'package:the_serve_admin/screens/tabs/users_tab.dart';
@@ -85,25 +86,33 @@ class _HomeScreenState extends State<HomeScreen> {
               items: [
                 SideMenuItem(
                   priority: 0,
-                  title: 'Users',
+                  title: 'Pending Providers',
                   onTap: () {
                     page.jumpToPage(0);
+                  },
+                  icon: const Icon(Icons.pending),
+                ),
+                SideMenuItem(
+                  priority: 1,
+                  title: 'Users',
+                  onTap: () {
+                    page.jumpToPage(1);
                   },
                   icon: const Icon(Icons.person),
                 ),
                 SideMenuItem(
-                  priority: 1,
+                  priority: 2,
                   title: 'Providers',
                   onTap: () {
-                    page.jumpToPage(1);
+                    page.jumpToPage(2);
                   },
                   icon: const Icon(Icons.home_repair_service_rounded),
                 ),
                 SideMenuItem(
-                  priority: 2,
+                  priority: 3,
                   title: 'Products',
                   onTap: () {
-                    page.jumpToPage(2);
+                    page.jumpToPage(3);
                   },
                   icon: const Icon(Icons.card_giftcard_sharp),
                 ),
@@ -288,6 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // AccountsTab(),
                 // TradeTab(),
                 // ItemsTab(),
+                PendingTab(),
                 UsersTab(),
                 ProvidersTab(),
                 ProductsTab(),
