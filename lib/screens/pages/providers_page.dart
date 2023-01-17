@@ -13,6 +13,7 @@ class ProvidersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+          tooltip: 'Accept Service Provider',
           backgroundColor: Colors.blue,
           child: Icon(
             Icons.check,

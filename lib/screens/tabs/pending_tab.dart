@@ -170,6 +170,8 @@ class _PendingTabState extends State<PendingTab> {
                                         Row(
                                           children: [
                                             IconButton(
+                                              tooltip:
+                                                  'View/Validate Service Provider',
                                               onPressed: () {
                                                 box.write('data', data.docs[i]);
                                                 Navigator.of(context).push(
@@ -183,6 +185,8 @@ class _PendingTabState extends State<PendingTab> {
                                               ),
                                             ),
                                             IconButton(
+                                              tooltip:
+                                                  'Reject Service Provider',
                                               onPressed: () {
                                                 showDialog(
                                                     context: context,
