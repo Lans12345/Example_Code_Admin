@@ -71,7 +71,7 @@ class _PendingTabState extends State<PendingTab> {
               StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Providers')
-                      // .where('status', isEqualTo: 'Pending')
+                      .where('status', isEqualTo: 'Pending')
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
