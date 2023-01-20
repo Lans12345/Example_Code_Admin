@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProvidersTab extends StatefulWidget {
   const ProvidersTab({super.key});
@@ -13,6 +14,32 @@ class _ProvidersTabState extends State<ProvidersTab> {
   int _dropdownValue1 = 0;
 
   late bool userType = false;
+
+  sendBanMessage(userEmail) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: userEmail,
+      queryParameters: {
+        'subject': 'Provider banned',
+        'body': 'Input Message',
+      },
+    );
+
+    await launch(emailLaunchUri.toString());
+  }
+
+  sendUnbanMessage(userEmail) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: userEmail,
+      queryParameters: {
+        'subject': 'Provider unbanned',
+        'body': 'Input Message',
+      },
+    );
+
+    await launch(emailLaunchUri.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,6 +225,8 @@ class _ProvidersTabState extends State<ProvidersTab> {
                                           ? DataCell(
                                               IconButton(
                                                 onPressed: () {
+                                                  sendUnbanMessage(
+                                                      data.docs[i]['email']);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           content: NormalText(
@@ -222,6 +251,8 @@ class _ProvidersTabState extends State<ProvidersTab> {
                                           : DataCell(
                                               IconButton(
                                                 onPressed: () {
+                                                  sendBanMessage(
+                                                      data.docs[i]['email']);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           content: NormalText(

@@ -5,6 +5,7 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:the_serve_admin/screens/pages/providers_page.dart';
 import 'package:the_serve_admin/widgets/text_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PendingTab extends StatefulWidget {
   const PendingTab({super.key});
@@ -23,32 +24,16 @@ class _PendingTabState extends State<PendingTab> {
   final box = GetStorage();
 
   sendBanMessage(userEmail, String newMsg) async {
-    String username = 'aira.maniquez@lorma.edu';
-    String password = 'Percival12';
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: userEmail,
+      queryParameters: {
+        'subject': 'Provider banned',
+        'body': newMsg,
+      },
+    );
 
-    final smtpServer = gmail(username, password);
-    final message = Message()
-      ..from = Address(username)
-      ..recipients.add(userEmail)
-//      ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
-//      ..bccRecipients.add(Address('bccAddress@example.com'))
-      ..subject = 'PERMISSION STATUS'
-      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-      ..html = "<h1>$newMsg</h1>";
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
-    } on MailerException catch (e) {
-      print(e);
-      for (var p in e.problems) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: NormalText(
-                label: '${p.code}: ${p.msg}',
-                fontSize: 12,
-                color: Colors.white)));
-      }
-    }
+    await launch(emailLaunchUri.toString());
   }
 
   @override
